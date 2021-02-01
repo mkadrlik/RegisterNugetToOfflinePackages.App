@@ -20,17 +20,20 @@ namespace RegisterNugetToOfflinePackages.App
 
             List<string> nugetDirectories = Directory.GetDirectories(folderPath).ToList();
             StringBuilder fullLog = new StringBuilder();
+            List<string> nugetFiles = new List<string>();
 
-            foreach (string nugetDirectory in nugetDirectories)
+            if (nugetDirectories.Count == 0) nugetFiles = Directory.GetFiles(folderPath, "*.nupkg", SearchOption.AllDirectories).ToList();
+            else nugetFiles.AddRange(nugetDirectories.SelectMany(nugetDirectory => Directory.GetFiles(nugetDirectory, "*.nupkg", SearchOption.AllDirectories)).ToList());
+
+            foreach (string nugetFile in nugetFiles)
             {
-                List<string> nugetFile = Directory.GetFiles(nugetDirectory, "*.nupkg", SearchOption.AllDirectories).ToList();
                 StringBuilder sb = new StringBuilder();
 
                 try
                 {
                     string nugetStore = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles(x86)"), ConfigurationManager.AppSettings["NuGetStore"]).AddQuotesAroundString();
                     string nugetExePath = string.Concat(Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles(x86)"), ConfigurationManager.AppSettings["NuGetExePath"])).AddQuotesAroundString();
-                    string arguments = string.Concat(" add ", nugetFile[0], " -Source ", nugetStore);
+                    string arguments = string.Concat(" add ", nugetFile, " -Source ", nugetStore);
 
                     Process process = new Process
                     {
@@ -58,7 +61,7 @@ namespace RegisterNugetToOfflinePackages.App
                         {
                             process.WaitForExit();
 
-                            _ = sb.Append(nugetFile[0].ToString()).AppendLine();
+                            _ = sb.Append(nugetFile.ToString()).AppendLine();
                             if (process.StandardInput.BaseStream.CanRead) _ = sb.Append(process.ExitCode).AppendLine();
                             if (process.StandardOutput.BaseStream.CanRead) _ = sb.Append(process.StandardOutput.ReadToEnd()).AppendLine();
                             if (process.StandardError.BaseStream.CanRead) _ = sb.Append(process.StandardError.ReadToEnd()).AppendLine();

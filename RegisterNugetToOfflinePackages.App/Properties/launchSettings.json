@@ -1,7 +1,8 @@
 {
   "profiles": {
     "RegisterNugetToOfflinePackages.App": {
-      "commandName": "Project"
+      "commandName": "Project",
+      "commandLineArgs": "C:\\Temp\\MP.OrderOrch.API"
     }
   }
 }
