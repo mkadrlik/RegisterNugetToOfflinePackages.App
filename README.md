@@ -1,12 +1,15 @@
-# Name: RegisterNugetToOfflinePackages.App
-# Purpose: Console app that writes nupkg files and adds to VS Offline Packages folder for offline use.
+# Name: 
+- RegisterNugetToOfflinePackages.App
+# Purpose: 
+- Console app that writes nupkg files and adds to VS Offline Packages folder for offline use.
 
 # Use: 
 - When built: Run the exe file with a folder path (it can be a parent level folder, if desired) argument:
   - Example: RegisterNugetToOfflinePackages.App C:\Temp
 - When Debugging: Add your folder path argument in Project Properties => Debug => Arguments, then begin debugging
 
-# Note: app.config contains appSettings values that contain the NuGet.Exe path and NugetSource folders; these can be changed to suit your needs.  
+# Note: 
+- app.config contains appSettings values that contain the NuGet.Exe path and NugetSource folders; these can be changed to suit your needs.  
   - If you run into any issues using non-Packages X86 foldrs, first try removing the extension method "AddQuotesAroundString()"
   
 # If making Code Changes:
