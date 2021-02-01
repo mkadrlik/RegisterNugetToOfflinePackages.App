@@ -1,5 +1,6 @@
 # Name: RegisterNugetToOfflinePackages.App
-# Purpose: Console app that writes nupkg files and adds to VS Offline Packages folder for offline use.
+# Purpose: 
+- Console app that writes nupkg files and adds to VS Offline Packages folder for offline use.
 
 # Use: 
 - When built: Run the exe file with a folder path (it can be a parent level folder, if desired) argument:
