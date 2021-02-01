@@ -13,6 +13,9 @@ namespace RegisterNugetToOfflinePackages.App
     {
         private static void Main(string[] args)
         {
+            // Test directory is C:\Temp (for when I tested it), when debugging - you will need to add to Project Properties => Debug => Arguments
+            // You are not bound to using this path, but it can be used for ease of use -- mkadrlik 2021-02-01
+
             string folderPath = args[0];
 
             List<string> nugetDirectories = Directory.GetDirectories(folderPath).ToList();

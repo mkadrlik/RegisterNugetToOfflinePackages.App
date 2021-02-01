@@ -1,8 +1,7 @@
 {
   "profiles": {
     "RegisterNugetToOfflinePackages.App": {
-      "commandName": "Project",
-      "commandLineArgs": "C:\\Temp"
+      "commandName": "Project"
     }
   }
 }
