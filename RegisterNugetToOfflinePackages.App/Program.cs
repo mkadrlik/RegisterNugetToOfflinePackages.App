@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RegisterNugetToOfflinePackages.App.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
@@ -19,26 +20,28 @@ namespace RegisterNugetToOfflinePackages.App
 
             foreach (string nugetDirectory in nugetDirectories)
             {
-                List<string> nugetFile = Directory.GetFiles(nugetDirectory, "*.nupkg").ToList();
+                List<string> nugetFile = Directory.GetFiles(nugetDirectory, "*.nupkg", SearchOption.AllDirectories).ToList();
                 StringBuilder sb = new StringBuilder();
 
                 try
                 {
-                    string nugetStore = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles(x86)"), ConfigurationManager.AppSettings["NuGetStore"]);
-                    string nugetExePath = string.Concat(Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles(x86)"), ConfigurationManager.AppSettings["NuGetExePath"]), " add ", nugetDirectory, " -Source ", nugetStore);
+                    string nugetStore = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles(x86)"), ConfigurationManager.AppSettings["NuGetStore"]).AddQuotesAroundString();
+                    string nugetExePath = string.Concat(Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles(x86)"), ConfigurationManager.AppSettings["NuGetExePath"])).AddQuotesAroundString();
+                    string arguments = string.Concat(" add ", nugetFile[0], " -Source ", nugetStore);
 
                     Process process = new Process
                     {
                         StartInfo = new ProcessStartInfo
                         {
-                            //Arguments = string.Concat(" add ", nugetDirectory, " -Source ", nugetStore),
+                            Arguments = arguments,
                             CreateNoWindow = false,
                             FileName = nugetExePath,
                             WindowStyle = ProcessWindowStyle.Hidden,
                             RedirectStandardOutput = true,
                             RedirectStandardError = true,
                             RedirectStandardInput = true,
-                            UseShellExecute = false
+                            UseShellExecute = false,
+                            Verb = "open"
                         }
                     };
 
@@ -46,9 +49,9 @@ namespace RegisterNugetToOfflinePackages.App
                     {
                         Console.WriteLine(process.StartInfo.FileName);
 
-                        bool isStarted = process.Start();
+                        bool isRunning = process.Start();
 
-                        if (isStarted)
+                        if (isRunning)
                         {
                             process.WaitForExit();
 
